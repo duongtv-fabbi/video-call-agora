@@ -107,20 +107,35 @@ export default {
   },
   methods: {
     sendMessage() {
+      console.log(1233)
       const message = {
         text: this.showMessage,
         username: this.name
       };
-      fire
-          .database()
-          .ref("messages")
-          .push(message);
+      fire.firestore()
+          .collection("messages")
+          .doc().set(message);
       this.showMessage = "";
     },
+  },
+  mounted() {
+    let viewMessage = this;
+    const itemsRef = fire.database().ref("messages");
+    itemsRef.on("value", snapshot => {
+      let data = snapshot.val();
+      let messages = [];
+      Object.keys(data).forEach(key => {
+        messages.push({
+          id: key,
+          username: data[key].username,
+          text: data[key].text
+        });
+      });
+      viewMessage.messages = messages;
+    });
   }
 
-}
-;
+};
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
