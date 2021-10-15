@@ -7,6 +7,7 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 // Import Bootstrap an BootstrapVue CSS files (order is important)
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import Chat from "../components/Chat";
 
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue)
@@ -25,6 +26,11 @@ const routes = [
         path: "/video-call",
         name: "VideoCall",
         component: VideoCall,
+    },
+    {
+        path: "/chat",
+        name: "Chat",
+        component: Chat,
     },
     {
         path: "/about",
