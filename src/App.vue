@@ -1,14 +1,31 @@
 <template>
   <div id="app">
-<!--    <div id="nav">-->
-<!--      <router-link to="/">Home</router-link> |-->
-<!--      <router-link to="/about">About</router-link>-->
-<!--    </div>-->
+    <!--    <div id="nav">-->
+    <!--      <router-link to="/">Home</router-link> |-->
+    <!--      <router-link to="/about">About</router-link>-->
+    <!--    </div>-->
     <router-view />
   </div>
 </template>
 
-<style>
+<script>
+import { getAuth } from "firebase/auth";
+
+export default {
+  created() {
+    const self = this;
+    getAuth().onAuthStateChanged(function(user) {
+      if (!user && self.$route.name !== "Login") {
+        self.$router.push({name: "Login"});
+      } else {
+        self.$store.dispatch("setUser", user);
+      }
+    });
+  },
+};
+</script>
+
+<style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
