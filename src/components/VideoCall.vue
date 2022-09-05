@@ -3,7 +3,14 @@
     <h2 class="left-align">Agora Video Web SDK Quickstart</h2>
     <div class="row">
       <div>
-        <button class="btn btn-success" type="button" id="join" @click="joinAgora">JOIN</button>
+        <button
+          class="btn btn-success"
+          type="button"
+          id="join"
+          @click="joinAgora"
+        >
+          JOIN
+        </button>
         <!--        <button class="btn-success." type="button" id="leave">LEAVE</button>-->
       </div>
       <div id="livestream">
@@ -11,39 +18,93 @@
           <div class="col-12">
             <div class="main">
               <div class="background" id="background">
-                <img src="../assets/logo.png" alt="">
+                <img src="../assets/logo.png" alt="" />
               </div>
               <div class="mask" id="mask">
                 <!--                <img src="../assets/mask.png" alt="">-->
                 <div class="mask-bar">
-                  <img src="../assets/icons/dot.svg" alt="">
+                  <img src="../assets/icons/dot.svg" alt="" />
                 </div>
               </div>
               <div class="active-icon">
                 <div class="speaker">
-                  <img @click="offSpeaker" v-if="device.speaker" src="../assets/icons/speaker.svg" alt="">
-                  <img @click="offSpeaker" v-else src="../assets/icons/off-speaker.svg" alt="">
+                  <img
+                    @click="offSpeaker"
+                    v-if="device.speaker"
+                    src="../assets/icons/speaker.svg"
+                    alt=""
+                  />
+                  <img
+                    @click="offSpeaker"
+                    v-else
+                    src="../assets/icons/off-speaker.svg"
+                    alt=""
+                  />
                 </div>
                 <div class="device">
                   <ul>
                     <li>
-                      <img @click="onShare" src="../assets/icons/share.svg" alt="" v-if="device.share">
-                      <img @click="offShare" src="../assets/icons/off-share.svg" alt="" v-else>
+                      <img
+                        @click="onShare"
+                        src="../assets/icons/share.svg"
+                        alt=""
+                        v-if="device.share"
+                      />
+                      <img
+                        @click="offShare"
+                        src="../assets/icons/off-share.svg"
+                        alt=""
+                        v-else
+                      />
                     </li>
                     <li>
-                      <img @click="offCam" src="../assets/icons/cam.svg" alt="" v-if="device.camera">
-                      <img @click="offCam" src="../assets/icons/off-cam.svg" alt="" v-else>
+                      <img
+                        @click="offCam"
+                        src="../assets/icons/cam.svg"
+                        alt=""
+                        v-if="device.camera"
+                      />
+                      <img
+                        @click="offCam"
+                        src="../assets/icons/off-cam.svg"
+                        alt=""
+                        v-else
+                      />
                     </li>
                     <li>
-                      <img @click="offMic" src="../assets/icons/mic.svg" alt="" v-if="device.mic">
-                      <img @click="offMic" src="../assets/icons/off-mic.svg" alt="" v-else>
+                      <img
+                        @click="offMic"
+                        src="../assets/icons/mic.svg"
+                        alt=""
+                        v-if="device.mic"
+                      />
+                      <img
+                        @click="offMic"
+                        src="../assets/icons/off-mic.svg"
+                        alt=""
+                        v-else
+                      />
                     </li>
                     <li>
-                      <img @click="offCall" src="../assets/icons/call.svg" alt="">
+                      <img
+                        @click="offCall"
+                        src="../assets/icons/call.svg"
+                        alt=""
+                      />
                     </li>
                     <li>
-                      <img @click="offFullScreen" src="../assets/icons/full-screen.svg" alt="" v-if="device.fullScreen">
-                      <img @click="offFullScreen" src="../assets/icons/exit-fullscreen.svg" alt="" v-else>
+                      <img
+                        @click="offFullScreen"
+                        src="../assets/icons/full-screen.svg"
+                        alt=""
+                        v-if="device.fullScreen"
+                      />
+                      <img
+                        @click="offFullScreen"
+                        src="../assets/icons/exit-fullscreen.svg"
+                        alt=""
+                        v-else
+                      />
                     </li>
                   </ul>
                 </div>
@@ -82,21 +143,22 @@ export default {
         // Set the channel name.
         channel: "duong123",
         // Pass your temp token here.
-        token: "00687bcd4532cbc4843bf407779d4b1a5a2IACh7x+mB5S5DqI2fk/dmzNxZX+WDvst6KuHeetcO058TX2Pi4EAAAAAEADjpwys3k5pYQEAAQDeTmlh",
+        token:
+          "00687bcd4532cbc4843bf407779d4b1a5a2IACh7x+mB5S5DqI2fk/dmzNxZX+WDvst6KuHeetcO058TX2Pi4EAAAAAEADjpwys3k5pYQEAAQDeTmlh",
         // Set the user ID.
-        uid: new Date().getTime().toString()
+        uid: new Date().getTime().toString(),
       },
       screenClient: AgoraRTC.createClient({
-        mode: 'rtc',
-        codec: 'vp8'
-      })
-    }
+        mode: "rtc",
+        codec: "vp8",
+      }),
+    };
   },
   mounted() {
-    this.rtc.client = AgoraRTC.createClient({mode: "rtc", codec: "vp8"});
+    this.rtc.client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
     // Listen for the "user-published" event, from which you can get an AgoraRTCRemoteUser object.
-    console.log(this.rtc.client)
+    console.log(this.rtc.client);
     this.rtc.client.on("user-published", this.userPublish);
   },
   methods: {
@@ -106,37 +168,44 @@ export default {
     onShare() {
       this.device.share = !this.device.share;
       this.screenClient.init(this.options.appId, function () {
-        this.screenClient.join(this.options.token, this.options.channel, null, function (uid) {
-          // Create the stream for screen sharing.
-          const streamSpec = {
-            streamID: uid,
-            audio: false,
-            video: false,
-            screen: true
-          }
-          // Set relevant properties according to the browser.
-          // Note that you need to implement isFirefox and isCompatibleChrome.
-          streamSpec.mediaSource = 'window';
-          // if (isFirefox()) {
-          //   streamSpec.mediaSource = 'window';
-          // } else if (!isCompatibleChrome()) {
-          //   streamSpec.extensionId = 'minllpmhdgpndnkomcoccfekfegnlikg';
-          // }
-          let screenStream = AgoraRTC.createStream(streamSpec);
-          // Initialize the stream.
-          screenStream.init(function () {
-            // Play the stream.
-            screenStream.play('Screen');
-            // Publish the stream.
-            this.screenClient.publish(screenStream);
-
-          }, function (err) {
+        this.screenClient.join(
+          this.options.token,
+          this.options.channel,
+          null,
+          function (uid) {
+            // Create the stream for screen sharing.
+            const streamSpec = {
+              streamID: uid,
+              audio: false,
+              video: false,
+              screen: true,
+            };
+            // Set relevant properties according to the browser.
+            // Note that you need to implement isFirefox and isCompatibleChrome.
+            streamSpec.mediaSource = "window";
+            // if (isFirefox()) {
+            //   streamSpec.mediaSource = 'window';
+            // } else if (!isCompatibleChrome()) {
+            //   streamSpec.extensionId = 'minllpmhdgpndnkomcoccfekfegnlikg';
+            // }
+            let screenStream = AgoraRTC.createStream(streamSpec);
+            // Initialize the stream.
+            screenStream.init(
+              function () {
+                // Play the stream.
+                screenStream.play("Screen");
+                // Publish the stream.
+                this.screenClient.publish(screenStream);
+              },
+              function (err) {
+                console.log(err);
+              }
+            );
+          },
+          function (err) {
             console.log(err);
-          });
-
-        }, function (err) {
-          console.log(err);
-        })
+          }
+        );
       });
     },
     offCam() {
@@ -148,7 +217,6 @@ export default {
     async offCall() {
       await this.rtc.client.leave();
       await this.rtc.screenTrack.close();
-
     },
     offFullScreen() {
       this.device.fullScreen = !this.device.fullScreen;
@@ -170,7 +238,7 @@ export default {
         const remotePlayerContainer = document.createElement("div");
         // Specify the ID of the DIV container. You can use the uid of the remote user.
         remotePlayerContainer.id = user.uid.toString();
-        remotePlayerContainer.class = 'user-public';
+        remotePlayerContainer.class = "user-public";
         // remotePlayerContainer.textContent = "Remote user " + user.uid.toString();
         remotePlayerContainer.style.width = "100%";
         remotePlayerContainer.style.height = "100%";
@@ -193,7 +261,7 @@ export default {
       }
 
       // Listen for the "user-unpublished" event
-      this.rtc.client.on("user-unpublished", user => {
+      this.rtc.client.on("user-unpublished", (user) => {
         // Get the dynamically created DIV container.
         const remotePlayerContainer = document.getElementById(user.uid);
         // Destroy the container.
@@ -202,7 +270,12 @@ export default {
     },
     async joinAgora() {
       // Join an RTC channel.
-      await this.rtc.client.join(this.options.appId, this.options.channel, this.options.token, this.options.uid);
+      await this.rtc.client.join(
+        this.options.appId,
+        this.options.channel,
+        this.options.token,
+        this.options.uid
+      );
       // Create a local audio track from the audio sampled by a microphone.
       // this.rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
       // Create a local video track from the video captured by a camera.
@@ -212,10 +285,10 @@ export default {
           // Set the encoder configurations. For details, see the API description.
           encoderConfig: "1080p_1",
           // Set the video transmission optimization mode as prioritizing video quality.
-          optimizationMode: "detail"
+          optimizationMode: "detail",
         });
       } catch (e) {
-        alert('abcd')
+        alert("abcd");
       }
       // Publish the local audio and video tracks to the RTC channel.
       // await this.rtc.client.publish([this.rtc.localAudioTrack, this.rtc.localVideoTrack]);
@@ -224,7 +297,7 @@ export default {
       const localPlayerContainer = document.createElement("div");
       // Specify the ID of the DIV container. You can use the uid of the local user.
       localPlayerContainer.id = this.options.uid;
-      localPlayerContainer.class = 'video-user';
+      localPlayerContainer.class = "video-user";
       // localPlayerContainer.textContent = "Local user " + this.options.uid;
       localPlayerContainer.style.width = "100%";
       localPlayerContainer.style.height = "100%";
@@ -237,9 +310,8 @@ export default {
       // this.rtc.localVideoTrack.play(localPlayerContainer);
       this.rtc.screenTrack.play(localPlayerContainer);
       console.log("publish success!");
-    }
-
-  }
+    },
+  },
 };
 </script>
 
